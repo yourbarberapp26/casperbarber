@@ -1,7 +1,6 @@
 // src/pages/public/PublicSite.jsx
-export default function PublicSite() {
-  return <div>Welcome to Casper!</div>
-}
+
+import { useMemo } from "react"
 
 // ─────────────────────────────────────────────
 // PUBLIC SITE  (client-facing)
@@ -176,3 +175,5 @@ function PublicSite({ services, appointments, onBook, booking, setBooking }) {
     </div>
   )
 }
+
+export default PublicSite

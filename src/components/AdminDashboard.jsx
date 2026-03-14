@@ -2,10 +2,10 @@
 import { useState, useMemo } from "react"
 import { formatMoney, isWithinLastNDays } from "../../utils/helpers"
 
-export default function AdminDashboard({ services, setServices, clients, setClients, appointments, setAppointments, onLogout }) {
-  // your admin dashboard code here
-}
+const LOGO =
+  "https://d2zdpiztbgorvt.cloudfront.net/region1/us/697614/biz_photo/88c2c5003f084211a8ba3ccdcc3b55-tanos-barbershop-biz-photo-734d5b5e9544420387ef63266a6f16-booksy.jpeg"
 
+  
 // ─────────────────────────────────────────────
 // ADMIN DASHBOARD  (Casper only)
 // ─────────────────────────────────────────────
