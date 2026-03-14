@@ -173,60 +173,27 @@ function App() {
   }
 
   return (
-  <>
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'BarberShop',
-          name: 'Casper',
-          url: 'https://casperbarber.com',
-          telephone: '(201) 889-6440',
-          email: 'emmix21379@gmail.com',
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: '442 Ridge Rd',
-            addressLocality: 'Lyndhurst',
-            addressRegion: 'NJ',
-            postalCode: '07071',
-            addressCountry: 'US',
-          },
-          openingHours: ['Mo-Fr 10:00-19:00', 'Sa 10:00-18:00'],
-          aggregateRating: { '@type': 'AggregateRating', ratingValue: '5.0', reviewCount: '59' },
-          priceRange: '$35–$100',
-        }),
-      }}
-    />
-
-    <PublicSite
-      services={services}
-      appointments={appointments}
-      onBook={handleBook}
-      booking={booking}
-      setBooking={setBooking}
-    />
-
-    {/* Temporary visible admin trigger for testing */}
-    <div
-      onClick={handleFooterTap}
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: '40px',
-        background: 'rgba(255,0,0,0.2)',
-        textAlign: 'center',
-        lineHeight: '40px',
-        cursor: 'pointer',
-        zIndex: 1000,
-        fontSize: '14px',
-        fontWeight: 'bold',
-      }}
-    >
-      Click 5× to login (demo)
-    </div>
-  </>
-)
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org', '@type': 'BarberShop',
+        name: 'Casper', url: 'https://casperbarber.com',
+        telephone: '(201) 889-6440', email: 'emmix21379@gmail.com',
+        address: { '@type': 'PostalAddress', streetAddress: '442 Ridge Rd', addressLocality: 'Lyndhurst', addressRegion: 'NJ', postalCode: '07071', addressCountry: 'US' },
+        openingHours: ['Mo-Fr 10:00-19:00', 'Sa 10:00-18:00'],
+        aggregateRating: { '@type': 'AggregateRating', ratingValue: '5.0', reviewCount: '59' },
+        priceRange: '$35–$100',
+      })}} />
+      <PublicSite
+        services={services}
+        appointments={appointments}
+        onBook={handleBook}
+        booking={booking}
+        setBooking={setBooking}
+      />
+      {/* Invisible admin trigger on footer */}
+      <div className="admin-trigger" onClick={handleFooterTap} aria-hidden="true" />
+    </>
+  )
 }
+
+export default App
