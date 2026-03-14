@@ -1,24 +1,24 @@
 // src/pages/public/PublicSite.jsx
-import { useState, useMemo } from "react"
+import { useMemo } from "react"
 import { formatMoney } from "../../utils/helpers"
+import LOGO from "../../assets/logo.png" // replace with your actual logo
+import GALLERY_PHOTOS from "../../assets/gallery" // array of image URLs
+import timeSlots from "../../utils/timeSlots" // predefined time slots array
 
 export default function PublicSite({ services, appointments, onBook, booking, setBooking }) {
   const selectedService = services.find((s) => s.id === booking.serviceId) ?? services[0]
 
-  const unavailableSlots = useMemo(
-    () =>
-      appointments
-        .filter((a) => a.date === booking.date && a.status !== "Cancelled")
-        .map((a) => a.time),
+  const unavailableSlots = useMemo(() =>
+    appointments
+      .filter((a) => a.date === booking.date && a.status !== 'Cancelled')
+      .map((a) => a.time),
     [appointments, booking.date]
   )
 
-  const timeSlots = [
-    "10:00", "10:30", "11:00", "11:30",
-    "12:00", "12:30", "13:00", "13:30",
-    "14:00", "14:30", "15:00", "15:30",
-    "16:00", "16:30", "17:00", "17:30",
-    "18:00", "18:30", "19:00"
+  const loyalty = [
+    { id: 'ly-1', title: '10 Cuts, 11th is Free', reward: 'Free Gentlemen Haircut / Shape Up ($35 value)' },
+    { id: 'ly-2', title: 'Refer a Friend', reward: '$10 off your next haircut' },
+    { id: 'ly-3', title: 'VIP Early Access', reward: 'Priority booking + complimentary hot towel on every visit' },
   ]
 
   return (
@@ -31,73 +31,54 @@ export default function PublicSite({ services, appointments, onBook, booking, se
           <span>(201) 889-6440</span>
         </div>
         <div className="hero__brand">
-          <img src={LOGO} alt="Casper – Master Barber, Lyndhurst NJ" className="hero__logo" />
+          <img src={LOGO} alt="Casper – Master Barber" className="hero__logo" />
           <div>
             <h1>Casper</h1>
-            <p className="hero__tagline">Master barber · Lyndhurst, NJ · 15+ years of elite cuts</p>
+            <p className="hero__tagline">Master barber · Lyndhurst, NJ · Est. 15+ years of elite cuts</p>
             <p className="hero__sub">Book directly — no middleman, no fees, just great cuts.</p>
-            <button onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })} className="btn">
-              Book Now
+            <button className="btn btn--primary" onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}>
+              Book Your Cut
             </button>
+            <div className="hero__hours">
+              <span>Mon–Fri 10am–7pm</span>
+              <span>Sat 10am–6pm</span>
+            </div>
           </div>
         </div>
       </header>
 
       <main className="layout">
+
         {/* BOOKING */}
         <section className="card" id="booking">
           <h2>Book an Appointment</h2>
-          <p className="section-sub">Pick your service, choose an open slot, and confirm.</p>
+          <p className="section-sub">
+            Pick your service, choose an open slot, and confirm. Changes allowed up to 1 hour before · 24-hour cancellation policy.
+          </p>
           <form className="stack" onSubmit={onBook}>
             <label>
-              Name
-              <input
-                placeholder="First and last name"
-                value={booking.customer}
-                onChange={(e) => setBooking((p) => ({ ...p, customer: e.target.value }))}
-                required
-              />
+              Your Name
+              <input value={booking.customer} onChange={(e) => setBooking((p) => ({ ...p, customer: e.target.value }))} placeholder="First and last name" required />
             </label>
             <label>
               Phone
-              <input
-                placeholder="(201) 000-0000"
-                value={booking.phone}
-                onChange={(e) => setBooking((p) => ({ ...p, phone: e.target.value }))}
-                required
-              />
+              <input value={booking.phone} onChange={(e) => setBooking((p) => ({ ...p, phone: e.target.value }))} placeholder="(201) 000-0000" required />
             </label>
             <label>
               Email
-              <input
-                type="email"
-                placeholder="you@email.com"
-                value={booking.email}
-                onChange={(e) => setBooking((p) => ({ ...p, email: e.target.value }))}
-                required
-              />
+              <input type="email" value={booking.email} onChange={(e) => setBooking((p) => ({ ...p, email: e.target.value }))} placeholder="you@email.com" required />
             </label>
 
             <div className="row">
               <label>
                 Date
-                <input
-                  type="date"
-                  value={booking.date}
-                  onChange={(e) => setBooking((p) => ({ ...p, date: e.target.value }))}
-                  required
-                />
+                <input type="date" value={booking.date} onChange={(e) => setBooking((p) => ({ ...p, date: e.target.value }))} required />
               </label>
               <label>
                 Service
-                <select
-                  value={booking.serviceId}
-                  onChange={(e) => setBooking((p) => ({ ...p, serviceId: e.target.value }))}
-                >
+                <select value={booking.serviceId} onChange={(e) => setBooking((p) => ({ ...p, serviceId: e.target.value }))}>
                   {services.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} — {formatMoney(s.price)}
-                    </option>
+                    <option key={s.id} value={s.id}>{s.name} — {formatMoney(s.price)}</option>
                   ))}
                 </select>
               </label>
@@ -106,9 +87,7 @@ export default function PublicSite({ services, appointments, onBook, booking, se
             {selectedService && (
               <div className="service-summary">
                 <strong>{selectedService.name}</strong>
-                <span>
-                  {selectedService.duration} min · {formatMoney(selectedService.price)}
-                </span>
+                <span>{selectedService.duration} min · {formatMoney(selectedService.price)}</span>
               </div>
             )}
 
@@ -117,14 +96,11 @@ export default function PublicSite({ services, appointments, onBook, booking, se
               <div className="chips">
                 {timeSlots.map((slot) => (
                   <button
-                    key={slot}
-                    type="button"
-                    className={slot === booking.time ? "chip chip--active" : "chip"}
+                    key={slot} type="button"
+                    className={slot === booking.time ? 'chip chip--active' : 'chip'}
                     disabled={unavailableSlots.includes(slot)}
                     onClick={() => setBooking((p) => ({ ...p, time: slot }))}
-                  >
-                    {slot}
-                  </button>
+                  >{slot}</button>
                 ))}
               </div>
             </div>
@@ -132,10 +108,7 @@ export default function PublicSite({ services, appointments, onBook, booking, se
             <div className="row">
               <label>
                 Payment
-                <select
-                  value={booking.paymentType}
-                  onChange={(e) => setBooking((p) => ({ ...p, paymentType: e.target.value }))}
-                >
+                <select value={booking.paymentType} onChange={(e) => setBooking((p) => ({ ...p, paymentType: e.target.value }))}>
                   <option value="deposit">Deposit (hold slot)</option>
                   <option value="full">Full Prepayment</option>
                   <option value="pay-later">Pay at Shop</option>
@@ -143,17 +116,11 @@ export default function PublicSite({ services, appointments, onBook, booking, se
               </label>
               <label>
                 Add Tip ($)
-                <input
-                  type="number"
-                  min="0"
-                  step="5"
-                  value={booking.tip}
-                  onChange={(e) => setBooking((p) => ({ ...p, tip: Number(e.target.value) }))}
-                />
+                <input type="number" min="0" step="5" value={booking.tip} onChange={(e) => setBooking((p) => ({ ...p, tip: Number(e.target.value) }))} />
               </label>
             </div>
 
-            <button className="btn" type="submit">Confirm Booking</button>
+            <button className="btn btn--primary" type="submit">Confirm Booking</button>
           </form>
         </section>
 
@@ -163,13 +130,7 @@ export default function PublicSite({ services, appointments, onBook, booking, se
           <p className="section-sub">Everything Casper offers — pick your service when booking.</p>
           <div className="table-wrap">
             <table>
-              <thead>
-                <tr>
-                  <th>Service</th>
-                  <th>Duration</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Service</th><th>Duration</th><th>Price</th></tr></thead>
               <tbody>
                 {services.map((s) => (
                   <tr key={s.id}>
@@ -188,14 +149,12 @@ export default function PublicSite({ services, appointments, onBook, booking, se
           <h2>Loyalty Rewards</h2>
           <p className="section-sub">Come back, get rewarded.</p>
           <div className="rewards">
-            <article>
-              <h3>10 Cuts, 11th Free</h3>
-              <p className="reward-value">Free Gentlemen Haircut / Shape Up ($35 value)</p>
-            </article>
-            <article>
-              <h3>Refer a Friend</h3>
-              <p className="reward-value">$10 off your next haircut</p>
-            </article>
+            {loyalty.map((p) => (
+              <article key={p.id}>
+                <h3>{p.title}</h3>
+                <p className="reward-value">{p.reward}</p>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -209,12 +168,11 @@ export default function PublicSite({ services, appointments, onBook, booking, se
             ))}
           </div>
         </section>
+
       </main>
 
       <footer className="footer">
-        <p>
-          <strong>Casper</strong> · 442 Ridge Rd, Lyndhurst, NJ 07071 · (201) 889-6440
-        </p>
+        <p><strong>Casper</strong> · 442 Ridge Rd, Lyndhurst, NJ 07071 · <a href="tel:2018896440">(201) 889-6440</a></p>
         <p className="muted">⭐ 5.0 · 59 verified reviews · Mon–Fri 10–7 · Sat 10–6</p>
       </footer>
     </div>
