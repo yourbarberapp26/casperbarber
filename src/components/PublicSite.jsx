@@ -4,7 +4,7 @@ import { formatMoney } from "../../utils/helpers"
 import LOGO from "../../assets/logo.png" // replace with your actual logo
 import GALLERY_PHOTOS from "../../assets/gallery" // array of image URLs
 import timeSlots from "../../utils/timeSlots" // predefined time slots array
-import { motion } from "framer-motion"
+
 
 export default function PublicSite({ services, appointments, onBook, booking, setBooking }) {
   const selectedService = services.find((s) => s.id === booking.serviceId) ?? services[0]
@@ -133,17 +133,13 @@ export default function PublicSite({ services, appointments, onBook, booking, se
             <table>
               <thead><tr><th>Service</th><th>Duration</th><th>Price</th></tr></thead>
               <tbody>
-                {services.map((service) => (
-  <motion.div
-    className="service-card"
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.97 }}
-    transition={{ type: "spring", stiffness: 200 }}
-  >
-    <h3>{service.name}</h3>
-    <p>{formatMoney(service.price)}</p>
-  </motion.div>
-))}
+                {services.map((s) => (
+                  <tr key={s.id}>
+                    <td>{s.name}</td>
+                    <td>{s.duration} min</td>
+                    <td>{formatMoney(s.price)}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

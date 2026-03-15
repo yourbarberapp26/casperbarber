@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import PublicSite from "./pages/public/PublicSite"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import toast, { Toaster } from "react-hot-toast"
-import { motion } from "framer-motion"
+
 
 const ADMIN_PIN = 'casper1'
 
